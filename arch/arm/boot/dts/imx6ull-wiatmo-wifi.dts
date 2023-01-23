@@ -1,0 +1,15 @@
+/*
+ * Copyright (C) NKE
+ *
+ */
+
+ /dts-v1/;
+
+#include "imx6ull-wiatmo.dtsi"
+#include "imx6ul-imx6ull-var-som-wifi.dtsi"
+
+/{
+	model = "Variscite VAR-SOM-6UL with i.MX6ULL, eMMC & WIFI on WitAmo board";
+	compatible = "variscite,imx6ul-var-som", "fsl,imx6ull";
+
+};
