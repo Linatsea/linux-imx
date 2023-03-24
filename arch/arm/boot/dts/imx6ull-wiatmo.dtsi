@@ -230,6 +230,9 @@
 			/* ADC */
 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02		0x1b0b0 /* VBAT_CMD */
 
+			/* IRQ_ON_OFF_UC */
+			MX6UL_PAD_NAND_CE1_B__GPIO4_IO14		0x1b0b0 /* IRQ_ON_OFF_UC */
+
 		>;
 	};
 	pinctrl_adc1: adc1grp {
@@ -445,7 +448,7 @@
 	"",					// 11
 	"",					// 12
 	"",					// 13
-	"",					// 14
+	"IRQ_ON_OFF_UC",	// 14
 	"",					// 15
 	"",					// 16
 	"",					// 17
