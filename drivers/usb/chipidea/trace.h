@@ -15,6 +15,7 @@
 
 #include <linux/types.h>
 #include <linux/tracepoint.h>
+#include <linux/usb/chipidea.h>
 #include "ci.h"
 #include "udc.h"
 
