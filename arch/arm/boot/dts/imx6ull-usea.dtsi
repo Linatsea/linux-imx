@@ -1,0 +1,455 @@
+/*
+ * Copyright (C) NKE
+ *
+ */
+
+ /dts-v1/;
+
+ #include "imx6ull.dtsi"
+ #include "imx6ull-var-som.dtsi"
+ #include "imx6ul-imx6ull-var-som-emmc.dtsi"
+
+/{
+
+	chosen {
+		stdout-path = &uart7;
+	};
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wakeup_key>;
+		wakeup {
+			label = "wakeup gpio";
+			gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
+			linux,code = <29>;
+			gpio-key,wakeup;
+		};
+  };
+
+};
+
+
+&snvs_rtc {
+	status = "okay";
+};
+
+
+&iomuxc {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_gpio_user>;
+
+
+	pinctrl_usb_otg1_id: usbotg1idgrp {
+		fsl,pins = <
+			MX6UL_PAD_UART3_TX_DATA__ANATOP_OTG1_ID	0x17059
+		>;
+	};
+
+	pinctrl_uart1: uart1grp {
+		fsl,pins = <
+			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
+			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
+		>;
+	};
+
+	pinctrl_uart2: uart2grp {
+		fsl,pins = <
+			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
+			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
+		>;
+	};
+
+	pinctrl_uart3: uart3grp {
+		fsl,pins = <
+			MX6UL_PAD_NAND_READY_B__UART3_DCE_TX    0x1b0b1
+			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX   0x1b0b1
+		>;
+	};
+
+	pinctrl_uart4: uart4grp {
+		fsl,pins = <
+			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX   0x1b0b1
+			MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX   0x1b0b1
+		>;
+	};
+
+	pinctrl_uart5: uart5grp {
+		fsl,pins = <
+			MX6UL_PAD_CSI_DATA00__UART5_DCE_TX      0x1b0b1
+			MX6UL_PAD_CSI_DATA01__UART5_DCE_RX      0x1b0b1
+	    >;
+	};
+
+	pinctrl_uart6: uart6grp {
+		fsl,pins = <
+			MX6UL_PAD_ENET2_RX_DATA0__UART6_DCE_TX  0x1b0b1
+			MX6UL_PAD_ENET2_RX_DATA1__UART6_DCE_RX  0x1b0b1
+		>;
+	};
+
+	pinctrl_uart7: uart7grp {
+		fsl,pins = <
+			MX6UL_PAD_LCD_DATA16__UART7_DCE_TX      0x1b0b1
+			MX6UL_PAD_LCD_DATA17__UART7_DCE_RX      0x1b0b1
+		>;
+	};
+
+	pinctrl_uart8: uart8grp {
+	    fsl,pins = <
+			MX6UL_PAD_LCD_DATA20__UART8_DCE_TX      0x1b0b1
+			MX6UL_PAD_LCD_DATA21__UART8_DCE_RX      0x1b0b1
+			>;
+	};
+
+	pinctrl_gpio_user: hoggrp {
+		fsl,pins = <
+			
+		/* pin 39, CSV2_1 */
+		MX6UL_PAD_ENET2_RX_ER__GPIO2_IO15			0x1b0b0
+
+		/* pin 41, MISOV2 */
+		MX6UL_PAD_ENET2_TX_CLK__GPIO2_IO14			0x1b0b0
+
+		/* pin 43, CLKV2 */
+		MX6UL_PAD_ENET2_TX_DATA1__GPIO2_IO12		0x1b0b0
+
+		/* pin 45, MOSIV2 */
+		MX6UL_PAD_ENET2_TX_EN__GPIO2_IO13			0x1b0b0
+
+		/* pin 71, PPS */
+		MX6UL_PAD_NAND_CE1_B__GPIO4_IO14			0x1b0b0
+
+		/* pin 87, SDAV2 */
+		MX6UL_PAD_CSI_MCLK__GPIO4_IO17				0x1b0b0
+
+		/* pin 88, SCLAV2 */
+		MX6UL_PAD_CSI_PIXCLK__GPIO4_IO18			0x1b0b0
+
+		/* pin 121, CMDV2_1 */
+		MX6UL_PAD_LCD_DATA03__GPIO3_IO08			0x1b0b0
+
+		/* pin 123, CMDV2_2 */
+		MX6UL_PAD_LCD_DATA12__GPIO3_IO17			0x1b0b0
+
+		/* pin 125, CMDV2_3 */
+		MX6UL_PAD_LCD_DATA13__GPIO3_IO18			0x1b0b0
+
+		/* pin 127, CMDV2_4 */
+		MX6UL_PAD_LCD_DATA14__GPIO3_IO19			0x1b0b0
+
+		/* pin 129, CMDV2_5 */
+		MX6UL_PAD_LCD_DATA15__GPIO3_IO20			0x1b0b0
+
+		/* pin 131, CMDV2_6 */
+		MX6UL_PAD_LCD_DATA18__GPIO3_IO23			0x1b0b0
+
+		/* pin 133, CMDV2_7 */
+		MX6UL_PAD_LCD_DATA19__GPIO3_IO24			0x1b0b0
+
+		/* pin 135, SLEEPN_V2 */
+		MX6UL_PAD_LCD_DATA22__GPIO3_IO27			0x1b0b0
+
+		/* pin 137, CSV2_2 */
+		MX6UL_PAD_LCD_DATA23__GPIO3_IO28			0x1b0b0
+
+		/* pin 141, IOV2_1 */
+		MX6UL_PAD_LCD_DATA08__GPIO3_IO13			0x1b0b0
+
+		/* pin 143, IOV2_2 */
+		MX6UL_PAD_LCD_DATA09__GPIO3_IO14			0x1b0b0
+
+		/* pin 145, ALARMS_1 */
+		MX6UL_PAD_LCD_RESET__GPIO3_IO04				0x1b0b0
+
+		/* pin 147, ALARMS_2 */
+		MX6UL_PAD_LCD_CLK__GPIO3_IO00				0x1b0b0
+
+		/* pin 151, ALARMS_3 */
+		MX6UL_PAD_ENET1_RX_EN__GPIO2_IO02			0x1b0b0
+
+		/* pin 153, ALARMS_4 */
+		MX6UL_PAD_ENET1_RX_ER__GPIO2_IO07			0x1b0b0
+
+		/* pin 155, ALARMS_5 */
+		MX6UL_PAD_ENET1_RX_DATA0__GPIO2_IO00		0x1b0b0
+
+		/* pin 157, ALARMS_6 */
+		MX6UL_PAD_ENET1_RX_DATA1__GPIO2_IO01		0x1b0b0
+
+		/* pin 165, ALARMS_7 */
+		MX6UL_PAD_LCD_HSYNC__GPIO3_IO02				0x1b0b0
+
+		/* pin 167, DEV2_6*/
+		MX6UL_PAD_LCD_VSYNC__GPIO3_IO03				0x1b0b0
+
+		>;
+	};
+
+};
+
+&iomuxc_snvs {
+
+	pinctrl_wakeup_key: wakeup_keygrp {
+		fsl,pins = <
+			MX6ULL_PAD_SNVS_TAMPER8__GPIO5_IO08		0x1b0b0 /* pin 177 */
+		>;
+	};
+};
+
+/* ttymxc0 UART */
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart1>;
+	status = "okay";
+};
+
+/* ttymxc1 UART */
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart2>;
+	status = "okay";
+};
+
+/* ttymxc2 UART */
+&uart3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart3>;
+	status = "okay";
+};
+
+/* ttymxc3 UART */
+&uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>;
+	status = "okay";
+};
+
+/* ttymxc4 UART */
+&uart5 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart5>;
+	status = "okay";
+};
+
+/* ttymxc5 UART */
+&uart6 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart6>;
+	status = "okay";
+};
+
+/* ttymxc6 UART */
+&uart7 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart7>;
+    status = "okay";
+};
+
+/* ttymxc7 UART */
+&uart8 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart8>;
+    status = "okay";
+};
+
+&usbotg1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_usb_otg1_id>;
+	dr_mode = "otg";
+	disable-over-current;
+	srp-disable;
+	hnp-disable;
+	adp-disable;
+	status = "okay";
+};
+
+&usbotg2 {
+	dr_mode = "host";
+	disable-over-current;
+	status = "okay";
+};
+
+&fec1 {
+	status = "disabled";
+};
+
+&gpio1 {
+	gpio-line-names =
+	"",					// 0
+	"",					// 1
+	"",					// 2
+	"",					// 3
+	"",					// 4
+	"",					// 5
+	"",					// 6
+	"",					// 7
+	"", 				// 8
+	"",					// 9
+	"",					// 10
+	"",					// 11
+	"",					// 12
+	"",					// 13
+	"",					// 14
+	"",					// 15
+	"",					// 16
+	"",					// 17
+	"",					// 18
+	"",					// 19
+	"",					// 20
+	"",					// 21
+	"",					// 22
+	"",					// 23
+	"",					// 24
+	"",					// 25
+	"",					// 26
+	"",					// 27
+	"",					// 28
+	"",					// 29
+	"",					// 30
+	"";					// 31
+};
+
+&gpio2 {
+	gpio-line-names =
+	"ALARMS_5",			// 0
+	"ALARMS_6",			// 1
+	"ALARMS_3",			// 2
+	"",					// 3
+	"",					// 4
+	"",					// 5
+	"",					// 6
+	"ALARMS_4",			// 7
+	"", 				// 8
+	"",					// 9
+	"",					// 10
+	"",					// 11
+	"CLKV2",			// 12
+	"MOSIV2",			// 13
+	"MISOV2",			// 14
+	"CSV2_1",			// 15
+	"",					// 16
+	"",					// 17
+	"",					// 18
+	"",					// 19
+	"",					// 20
+	"",					// 21
+	"",					// 22
+	"",					// 23
+	"",					// 24
+	"",					// 25
+	"",					// 26
+	"",					// 27
+	"",					// 28
+	"",					// 29
+	"",					// 30
+	"";					// 31
+};
+
+&gpio3 {
+	gpio-line-names =
+	"ALARMS_2",			// 0
+	"",					// 1
+	"ALARMS_7",			// 2
+	"DEV2_6",			// 3
+	"ALARMS_1",			// 4
+	"",					// 5
+	"",					// 6
+	"",					// 7
+	"CMDV2_1",			// 8
+	"",					// 9
+	"",					// 10
+	"",					// 11
+	"",					// 12
+	"IOV2_1",			// 13
+	"IOV2_2",			// 14
+	"",					// 15
+	"",					// 16
+	"CMDV2_2",			// 17
+	"CMDV2_3",			// 18
+	"CMDV2_4",			// 19
+	"CMDV2_5",			// 20
+	"",					// 21
+	"",					// 22
+	"CMDV2_6",			// 23
+	"CMDV2_7",			// 24
+	"",					// 25
+	"",					// 26
+	"SLEEPN_V2",		// 27
+	"CSV2_2",			// 28
+	"",					// 29
+	"",					// 30
+	"";					// 31
+};
+
+&gpio4 {
+	gpio-line-names =
+	"",					// 0
+	"",					// 1
+	"",					// 2
+	"",					// 3
+	"",					// 4
+	"",					// 5
+	"",					// 6
+	"",					// 7
+	"", 				// 8
+	"",					// 9
+	"",					// 10
+	"",					// 11
+	"",					// 12
+	"",					// 13
+	"PPS",				// 14
+	"",					// 15
+	"",					// 16
+	"SDAV2",			// 17
+	"SCLV2",			// 18
+	"",					// 19
+	"",					// 20
+	"",					// 21
+	"",					// 22
+	"",					// 23
+	"",					// 24
+	"",					// 25
+	"",					// 26
+	"",					// 27
+	"",					// 28
+	"",					// 29
+	"",					// 30
+	"";					// 31
+};
+
+&gpio5 {
+	gpio-line-names =
+	"",					// 0
+	"",					// 1
+	"",					// 2
+	"",					// 3
+	"",					// 4
+	"",					// 5
+	"",					// 6
+	"",					// 7
+	"", 				// 8
+	"",					// 9
+	"",					// 10
+	"",					// 11
+	"",					// 12
+	"",					// 13
+	"",					// 14
+	"",					// 15
+	"",					// 16
+	"",					// 17
+	"",					// 18
+	"",					// 19
+	"",					// 20
+	"",					// 21
+	"",					// 22
+	"",					// 23
+	"",					// 24
+	"",					// 25
+	"",					// 26
+	"",					// 27
+	"",					// 28
+	"",					// 29
+	"",					// 30
+	"";					// 31
+};
