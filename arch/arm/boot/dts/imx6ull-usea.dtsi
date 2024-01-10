@@ -34,6 +34,29 @@
 	status = "okay";
 };
 
+#define PAD_CTL_HYS                     (1 << 16)
+#define PAD_CTL_PUS_100K_DOWN           (0 << 14)
+#define PAD_CTL_PUS_47K_UP              (1 << 14)
+#define PAD_CTL_PUS_100K_UP             (2 << 14)
+#define PAD_CTL_PUS_22K_UP              (3 << 14)
+#define PAD_CTL_PUE                     (1 << 13)
+#define PAD_CTL_PKE                     (1 << 12)
+#define PAD_CTL_ODE                     (1 << 11)
+#define PAD_CTL_SPEED_LOW               (0 << 6)
+#define PAD_CTL_SPEED_MED               (1 << 6)
+#define PAD_CTL_SPEED_HIGH              (3 << 6)
+#define PAD_CTL_DSE_DISABLE             (0 << 3)
+#define PAD_CTL_DSE_260ohm              (1 << 3)
+#define PAD_CTL_DSE_130ohm              (2 << 3)
+#define PAD_CTL_DSE_87ohm               (3 << 3)
+#define PAD_CTL_DSE_65ohm               (4 << 3)
+#define PAD_CTL_DSE_52ohm               (5 << 3)
+#define PAD_CTL_DSE_43ohm               (6 << 3)
+#define PAD_CTL_DSE_37ohm               (7 << 3)
+#define PAD_CTL_SRE_FAST                (1 << 0)
+#define PAD_CTL_SRE_SLOW                (0 << 0)
+
+#define PAD_CTL_UART_SLEEP		PAD_CTL_PKE
 
 &iomuxc {
 	pinctrl-names = "default";
@@ -53,10 +76,24 @@
 		>;
 	};
 
+	pinctrl_uart1_sleep: uart1sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_UART1_TX_DATA__GPIO1_IO16	PAD_CTL_UART_SLEEP
+			MX6UL_PAD_UART1_RX_DATA__GPIO1_IO17	PAD_CTL_UART_SLEEP
+		>;
+	};
+
 	pinctrl_uart2: uart2grp {
 		fsl,pins = <
 			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
 			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
+		>;
+	};
+
+	pinctrl_uart2_sleep: uart2sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_UART2_TX_DATA__GPIO1_IO20	PAD_CTL_UART_SLEEP
+			MX6UL_PAD_UART2_RX_DATA__GPIO1_IO21	PAD_CTL_UART_SLEEP
 		>;
 	};
 
@@ -67,10 +104,24 @@
 		>;
 	};
 
+	pinctrl_uart3_sleep: uart3sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_NAND_READY_B__GPIO4_IO12    PAD_CTL_UART_SLEEP
+			MX6UL_PAD_UART3_RX_DATA__GPIO1_IO25   PAD_CTL_UART_SLEEP
+		>;
+	};
+
 	pinctrl_uart4: uart4grp {
 		fsl,pins = <
 			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX   0x1b0b1
 			MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX   0x1b0b1
+		>;
+	};
+
+	pinctrl_uart4_sleep: uart4sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_UART4_TX_DATA__GPIO1_IO28   PAD_CTL_UART_SLEEP
+			MX6UL_PAD_UART4_RX_DATA__GPIO1_IO29   PAD_CTL_UART_SLEEP
 		>;
 	};
 
@@ -81,11 +132,25 @@
 	    >;
 	};
 
+	pinctrl_uart5_sleep: uart5sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_CSI_DATA00__GPIO4_IO21      PAD_CTL_UART_SLEEP
+			MX6UL_PAD_CSI_DATA01__GPIO4_IO22      PAD_CTL_UART_SLEEP
+	    >;
+	};
+
 	pinctrl_uart6: uart6grp {
 		fsl,pins = <
 			MX6UL_PAD_ENET2_RX_DATA0__UART6_DCE_TX  0x1b0b1
 			MX6UL_PAD_ENET2_RX_DATA1__UART6_DCE_RX  0x1b0b1
 		>;
+	};
+
+	pinctrl_uart6_sleep: uart6sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08      PAD_CTL_UART_SLEEP
+			MX6UL_PAD_ENET2_TX_DATA0__GPIO2_IO11      PAD_CTL_UART_SLEEP
+	    >;
 	};
 
 	pinctrl_uart7: uart7grp {
@@ -95,10 +160,24 @@
 		>;
 	};
 
+	pinctrl_uart7_sleep: uart7sleepgrp {
+		fsl,pins = <
+			MX6UL_PAD_LCD_DATA16__GPIO3_IO21      PAD_CTL_UART_SLEEP
+			MX6UL_PAD_LCD_DATA17__GPIO3_IO22      PAD_CTL_UART_SLEEP
+		>;
+	};
+
 	pinctrl_uart8: uart8grp {
 	    fsl,pins = <
 			MX6UL_PAD_LCD_DATA20__UART8_DCE_TX      0x1b0b1
 			MX6UL_PAD_LCD_DATA21__UART8_DCE_RX      0x1b0b1
+			>;
+	};
+
+	pinctrl_uart8_sleep: uart8sleepgrp {
+	    fsl,pins = <
+			MX6UL_PAD_LCD_DATA20__GPIO3_IO25      PAD_CTL_UART_SLEEP
+			MX6UL_PAD_LCD_DATA21__GPIO3_IO26      PAD_CTL_UART_SLEEP
 			>;
 	};
 
@@ -199,57 +278,65 @@
 
 /* ttymxc0 UART */
 &uart1 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart1>;
+	pinctrl-1 = <&pinctrl_uart1_sleep>;
 	status = "okay";
 };
 
 /* ttymxc1 UART */
 &uart2 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart2>;
+	pinctrl-1 = <&pinctrl_uart2_sleep>;
 	status = "okay";
 };
 
 /* ttymxc2 UART */
 &uart3 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart3>;
+	pinctrl-1 = <&pinctrl_uart3_sleep>;
 	status = "okay";
 };
 
 /* ttymxc3 UART */
 &uart4 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart4>;
+	pinctrl-1 = <&pinctrl_uart4_sleep>;
 	status = "okay";
 };
 
 /* ttymxc4 UART */
 &uart5 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart5>;
+	pinctrl-1 = <&pinctrl_uart5_sleep>;
 	status = "okay";
 };
 
 /* ttymxc5 UART */
 &uart6 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart6>;
+	pinctrl-1 = <&pinctrl_uart6_sleep>;
 	status = "okay";
 };
 
 /* ttymxc6 UART */
 &uart7 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart7>;
+	pinctrl-1 = <&pinctrl_uart7_sleep>;
     status = "okay";
 };
 
 /* ttymxc7 UART */
 &uart8 {
-	pinctrl-names = "default";
+	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_uart8>;
+	pinctrl-1 = <&pinctrl_uart8_sleep>;
     status = "okay";
 };
 
