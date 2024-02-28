@@ -15,6 +15,18 @@
 		stdout-path = &uart1;
 	};
 
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wakeup_key>;
+		wakeup {
+			label = "wakeup gpio";
+			gpios = <&gpio5 1 GPIO_ACTIVE_LOW>;
+			linux,code = <29>;
+			gpio-key,wakeup;
+		};
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -85,6 +97,16 @@
 			MX6ULL_PAD_SNVS_TAMPER8__GPIO5_IO08		0x1b0b0 /* RTC alarm IRQ */
 		>;
 	};
+
+
+	pinctrl_wakeup_key: wakeup_keygrp {
+		fsl,pins = <
+		/* pin 73 */
+		MX6ULL_PAD_SNVS_TAMPER1__GPIO5_IO01			0x1b0b0
+		>;
+
+	};
+
 };
 
 
