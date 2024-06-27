@@ -95,6 +95,8 @@ static int imx2_wdt_restart(struct watchdog_device *wdog, unsigned long action,
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
 	unsigned int wcr_enable = IMX2_WDT_WCR_WDE;
 
+	dev_info(wdog->parent, "restart");
+
 	/* Use internal reset or external - not both */
 	if (wdev->ext_reset)
 		wcr_enable |= IMX2_WDT_WCR_SRS; /* do not assert int reset */
@@ -161,6 +163,8 @@ static int imx2_wdt_ping(struct watchdog_device *wdog)
 {
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
 
+	dev_info(wdog->parent, "ping");
+
 	if (!wdev->clk_is_on)
 		return 0;
 
@@ -221,6 +225,8 @@ static irqreturn_t imx2_wdt_isr(int irq, void *wdog_arg)
 static int imx2_wdt_start(struct watchdog_device *wdog)
 {
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
+
+	dev_info(wdog->parent, "start");
 
 	if (imx2_wdt_is_running(wdev))
 		imx2_wdt_set_timeout(wdog, wdog->timeout);
