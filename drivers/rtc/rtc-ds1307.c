@@ -1,3 +1,4 @@
+#define DEBUG
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * rtc-ds1307.c - RTC driver for some mostly-compatible I2C chips.

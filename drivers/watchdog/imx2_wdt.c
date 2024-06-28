@@ -344,6 +344,8 @@ static void imx2_wdt_shutdown(struct platform_device *pdev)
 {
 	struct watchdog_device *wdog = platform_get_drvdata(pdev);
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
+		
+	dev_info(wdog->parent, "shutdown ...\n");
 
 	if (imx2_wdt_is_running(wdev)) {
 		/*
@@ -361,6 +363,8 @@ static int __maybe_unused imx2_wdt_suspend(struct device *dev)
 {
 	struct watchdog_device *wdog = dev_get_drvdata(dev);
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
+
+	dev_info(wdog->parent, "suspend ...\n");
 
 	/* The watchdog IP block is running */
 	if (imx2_wdt_is_running(wdev)) {
@@ -385,6 +389,8 @@ static int __maybe_unused imx2_wdt_resume(struct device *dev)
 	struct watchdog_device *wdog = dev_get_drvdata(dev);
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
 	int ret;
+
+	dev_info(wdog->parent, "resume ...\n");
 
 	ret = clk_prepare_enable(wdev->clk);
 	if (ret)
