@@ -476,6 +476,8 @@ int suspend_devices_and_enter(suspend_state_t state)
 	int error;
 	bool wakeup = false;
 
+	pr_info("LINATSEA: %s\n", __func__);
+
 	if (!sleep_state_supported(state))
 		return -ENOSYS;
 
@@ -484,12 +486,22 @@ int suspend_devices_and_enter(suspend_state_t state)
 	if (state == PM_SUSPEND_TO_IDLE)
 		pm_set_suspend_no_platform();
 
+	pr_info("LINATSEA: %s -> platform_suspend_begin\n", __func__);
+
 	error = platform_suspend_begin(state);
-	if (error)
+	if (error) 
 		goto Close;
 
+	pr_info("LINATSEA: %s -> suspend console\n", __func__);
+
 	suspend_console();
+
+	pr_info("LINATSEA: %s -> suspend test start\n", __func__);
+
 	suspend_test_start();
+
+	pr_info("LINATSEA: %s -> dpm_suspend start\n", __func__);
+
 	error = dpm_suspend_start(PMSG_SUSPEND);
 	if (error) {
 		pr_err("Some devices failed to suspend, or early wake event detected\n");
@@ -499,9 +511,13 @@ int suspend_devices_and_enter(suspend_state_t state)
 	if (suspend_test(TEST_DEVICES))
 		goto Recover_platform;
 
+	pr_info("LINATSEA: %s -> enter suspend loop\n", __func__);
+
 	do {
 		error = suspend_enter(state, &wakeup);
 	} while (!error && !wakeup && platform_suspend_again(state));
+
+	pr_info("LINATSEA: %s -> exit suspend loop\n", __func__);
 
  Resume_devices:
 	suspend_test_start();
@@ -546,6 +562,8 @@ static int enter_state(suspend_state_t state)
 {
 	int error;
 
+	pr_info("LINATSEA: %s enter state %d\n", __func__, state);
+
 	trace_suspend_resume(TPS("suspend_enter"), state, true);
 	if (state == PM_SUSPEND_TO_IDLE) {
 #ifdef CONFIG_PM_DEBUG
@@ -557,8 +575,10 @@ static int enter_state(suspend_state_t state)
 	} else if (!valid_state(state)) {
 		return -EINVAL;
 	}
-	if (!mutex_trylock(&system_transition_mutex))
+	if (!mutex_trylock(&system_transition_mutex)) {
+		pr_info("LINATSEA: %s failed to grab system transition mutex\n", __func__);
 		return -EBUSY;
+	}
 
 	if (state == PM_SUSPEND_TO_IDLE)
 		s2idle_begin();
@@ -568,6 +588,8 @@ static int enter_state(suspend_state_t state)
 		ksys_sync_helper();
 		trace_suspend_resume(TPS("sync_filesystems"), 0, false);
 	}
+
+	pr_info("LINATSEA: %s Preparing system for sleep %s\n", __func__, state, mem_sleep_labels[state]);
 
 	pm_pr_dbg("Preparing system for sleep (%s)\n", mem_sleep_labels[state]);
 	pm_suspend_clear_flags();

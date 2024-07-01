@@ -1734,6 +1734,8 @@ static void async_suspend(void *data, async_cookie_t cookie)
 	struct device *dev = (struct device *)data;
 	int error;
 
+	pr_info("%s: LINATSEA: %s\n", __func__, dev->init_name);
+
 	error = __device_suspend(dev, pm_transition, true);
 	if (error) {
 		dpm_save_failed_dev(dev_name(dev));
@@ -1763,14 +1765,26 @@ int dpm_suspend(pm_message_t state)
 	trace_suspend_resume(TPS("dpm_suspend"), state.event, true);
 	might_sleep();
 
+	pr_info("%s: LINATSEA -> devfreq_suspend\n", __func__);
+
 	devfreq_suspend();
+	pr_info("%s: LINATSEA -> cpufreq_suspend\n", __func__);
+
 	cpufreq_suspend();
 
 	mutex_lock(&dpm_list_mtx);
 	pm_transition = state;
 	async_error = 0;
+
+	pr_info("%s: LINATSEA -> all devs\n", __func__);
+
 	while (!list_empty(&dpm_prepared_list)) {
 		struct device *dev = to_device(dpm_prepared_list.prev);
+		char * driver_name ="";
+		if (dev->driver && dev->driver->name)
+			driver_name=dev->driver->name;
+
+		pr_info("%s: LINATSEA -> dev %s\n", __func__, driver_name);
 
 		get_device(dev);
 
@@ -1796,11 +1810,18 @@ int dpm_suspend(pm_message_t state)
 		if (error || async_error)
 			break;
 	}
+
+	pr_info("%s: LINATSEA -> all devs done\n", __func__);
+
 	mutex_unlock(&dpm_list_mtx);
+
+	pr_info("%s: LINATSEA -> async_synchronize_full\n", __func__);
+
 	async_synchronize_full();
 	if (!error)
 		error = async_error;
 	if (error) {
+		pr_info("%s: LINATSEA -> error\n", __func__);
 		suspend_stats.failed_suspend++;
 		dpm_save_failed_step(SUSPEND_SUSPEND);
 	}
@@ -1908,6 +1929,12 @@ int dpm_prepare(pm_message_t state)
 	mutex_lock(&dpm_list_mtx);
 	while (!list_empty(&dpm_list) && !error) {
 		struct device *dev = to_device(dpm_list.next);
+		char *driver_name ="";
+
+		if (dev->driver && dev->driver->name)
+			driver_name=dev->driver->name;
+
+		pr_info("%s: LINATSEA: dev %s, driver %s\n", __func__, dev->init_name, driver_name);
 
 		get_device(dev);
 
