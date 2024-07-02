@@ -1611,11 +1611,22 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 {
 	pm_callback_t callback = NULL;
 	const char *info = NULL;
+	const char *name = "";
+	const char * driver_name="";
 	int error = 0;
 	DECLARE_DPM_WATCHDOG_ON_STACK(wd);
 
 	TRACE_DEVICE(dev);
 	TRACE_SUSPEND(0);
+
+	if (dev->of_node && dev->of_node->name)
+		name = dev->of_node->name;
+
+	if (dev->driver && dev->driver->name)
+		driver_name=dev->driver->name;
+
+
+	pr_info("LINATSEA %s: node %s driver %s\n", __func__, name, driver_name);
 
 	dpm_wait_for_subordinate(dev, async);
 
@@ -1734,8 +1745,6 @@ static void async_suspend(void *data, async_cookie_t cookie)
 	struct device *dev = (struct device *)data;
 	int error;
 
-	pr_info("%s: LINATSEA: %s\n", __func__, dev->init_name);
-
 	error = __device_suspend(dev, pm_transition, true);
 	if (error) {
 		dpm_save_failed_dev(dev_name(dev));
@@ -1780,11 +1789,6 @@ int dpm_suspend(pm_message_t state)
 
 	while (!list_empty(&dpm_prepared_list)) {
 		struct device *dev = to_device(dpm_prepared_list.prev);
-		char * driver_name ="";
-		if (dev->driver && dev->driver->name)
-			driver_name=dev->driver->name;
-
-		pr_info("%s: LINATSEA -> dev %s\n", __func__, driver_name);
 
 		get_device(dev);
 
@@ -1929,12 +1933,6 @@ int dpm_prepare(pm_message_t state)
 	mutex_lock(&dpm_list_mtx);
 	while (!list_empty(&dpm_list) && !error) {
 		struct device *dev = to_device(dpm_list.next);
-		char *driver_name ="";
-
-		if (dev->driver && dev->driver->name)
-			driver_name=dev->driver->name;
-
-		pr_info("%s: LINATSEA: dev %s, driver %s\n", __func__, dev->init_name, driver_name);
 
 		get_device(dev);
 
