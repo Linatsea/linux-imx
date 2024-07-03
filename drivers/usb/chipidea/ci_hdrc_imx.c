@@ -5,8 +5,6 @@
  * on behalf of DENX Software Engineering GmbH
  */
 
-#define DEBUG 1
-
 #include <linux/module.h>
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>

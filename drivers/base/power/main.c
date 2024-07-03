@@ -1610,23 +1610,16 @@ static void dpm_clear_superiors_direct_complete(struct device *dev)
 static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 {
 	pm_callback_t callback = NULL;
+	
 	const char *info = NULL;
-	const char *name = "";
-	const char * driver_name="";
 	int error = 0;
 	DECLARE_DPM_WATCHDOG_ON_STACK(wd);
 
 	TRACE_DEVICE(dev);
 	TRACE_SUSPEND(0);
 
-	if (dev->of_node && dev->of_node->name)
-		name = dev->of_node->name;
-
-	if (dev->driver && dev->driver->name)
-		driver_name=dev->driver->name;
-
-
-	pr_info("LINATSEA %s: node %s driver %s\n", __func__, name, driver_name);
+	pr_info("%s (%d): '%s'\n", __func__, 
+		async, dev_name(dev));
 
 	dpm_wait_for_subordinate(dev, async);
 

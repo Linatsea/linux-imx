@@ -163,8 +163,6 @@ static int imx2_wdt_ping(struct watchdog_device *wdog)
 {
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
 
-	dev_info(wdog->parent, "ping");
-
 	if (!wdev->clk_is_on)
 		return 0;
 
