@@ -25,12 +25,15 @@
 			linux,code = <29>;
 			gpio-key,wakeup;
 		};
-  };
-
+	};
 };
 
-
 &snvs_rtc {
+	status = "okay";
+};
+
+&i2c1 {
+	clock_frequency = <100000>;
 	status = "okay";
 };
 
@@ -62,6 +65,12 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_gpio_user>;
 
+	pinctrl_i2c1: i2c1grp {
+		fsl,pins = <
+			MX6UL_PAD_CSI_PIXCLK__I2C1_SCL		0x4001b8b0
+			MX6UL_PAD_CSI_MCLK__I2C1_SDA		0x4001b8b0
+		>;
+	};
 
 	pinctrl_usb_otg1_id: usbotg1idgrp {
 		fsl,pins = <
@@ -501,8 +510,8 @@
 	"PPS",					// 14
 	"",					// 15
 	"",					// 16
-	"SDAV2",				// 17
-	"SCLV2",				// 18
+	"",					// 17
+	"",					// 18
 	"",					// 19
 	"",					// 20
 	"",					// 21
