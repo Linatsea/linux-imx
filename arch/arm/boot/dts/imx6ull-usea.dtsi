@@ -34,6 +34,8 @@
 
 &i2c1 {
 	clock_frequency = <100000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 };
 
@@ -222,12 +224,6 @@
 		
 		/* pin 80, ALARMS_4 */
 		MX6UL_PAD_GPIO1_IO00__GPIO1_IO00			0x1b0b0
-		
-		/* pin 87, SDAV2 */
-		MX6UL_PAD_CSI_MCLK__GPIO4_IO17				0x1a0b0
-		
-		/* pin 88, SCLV2 */
-		MX6UL_PAD_CSI_PIXCLK__GPIO4_IO18			0x1a0b0
 		
 		/* pin 121, CMDV2_1 */
 		MX6UL_PAD_LCD_DATA03__GPIO3_IO08			0x130b0
